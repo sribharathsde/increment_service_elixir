@@ -1,0 +1,55 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: increment_service
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+  
+  # ui view pgadmin v4
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: postgres_ui
+    ports:
+      - 8082:80
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=user@mail.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    depends_on:
+      - db
+    networks:
+      - app-network
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+
+#  app:
+#    build: .
+#    command: mix ecto.create && mix ecto.migrate && mix phx.server
+#    volumes:
+#      - .:/app
+#    ports:
+#      - "3333:3333"
+#    depends_on:
+#      - db
+#    environment:
+#      DATABASE_URL: postgres://postgres:postgres@db:5432/increment_service
+#    networks:
+#      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+  dbnetwork:
+
+volumes:
+  postgres_data:
