@@ -84,9 +84,9 @@ Using Docker and Docker Compose simplifies the setup because everything (Elixir,
     ```
 
 3. **Set up the PostgreSQL database**:
-    - Ensure PostgreSQL is running.
-    - Modify `config/dev.exs` with your PostgreSQL credentials if needed.
-    - Create and migrate the database:
+    - Ensure PostgreSQL is running. follow step 3. from Running the project without Docker to setup local instance of postgres
+    - Modify `config/dev.exs` with your PostgreSQL credentials, username, password and database.
+    - Create and migrate the database: (before running below commands, make sure config/dev.exs is updated with your database credentials)
         ```bash
         mix ecto.create
         mix ecto.migrate
